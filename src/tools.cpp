@@ -62,7 +62,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   }
   else
   {
-    std::cout << "CalculateJacobian () - Error - Dividion by Zero";
+    std::cout << "CalculateJacobian () - Error - Dividion by Zero" << std::endl;
   }
   
   return Hj;
