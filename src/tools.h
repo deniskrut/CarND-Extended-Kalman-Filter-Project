@@ -31,7 +31,7 @@ public:
   Eigen::MatrixXd ConvertCartesianToPolar(const Eigen::VectorXd& x_state);
   
   /**
-   * A helper method to normalize ϕ.
+   * A helper method to normalize ϕ to be between -π and π.
    */
   void NormalizePhi(Eigen::VectorXd& y);
 

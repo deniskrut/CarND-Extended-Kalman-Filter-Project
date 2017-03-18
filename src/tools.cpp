@@ -101,8 +101,7 @@ MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
 void Tools::NormalizePhi(Eigen::VectorXd& y) {
   float phi = y(1);
   
-  phi = phi - static_cast<int>(phi / (2 * M_PI));
-  phi = phi > M_PI ? phi - 2 * M_PI : phi;
+  phi = atan2(sin(phi),cos(phi));
   
   y(1) = phi;
 }
