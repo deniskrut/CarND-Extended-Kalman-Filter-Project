@@ -43,10 +43,9 @@ void KalmanFilter::Update(const VectorXd &z) {
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   Tools tools;
   
-  MatrixXd h = tools.CalculateCartesianToPolarMatrix(x_);
+  MatrixXd h_x = tools.ConvertCartesianToPolar(x_);
   
-  VectorXd z_pred = h * x_;
-  VectorXd y = z - z_pred;
+  VectorXd y = z - h_x;
   
   tools.NormalizePhi(y);
   

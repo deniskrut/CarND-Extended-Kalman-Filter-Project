@@ -65,8 +65,8 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   return Hj;
 }
 
-MatrixXd Tools::CalculateCartesianToPolarMatrix(const VectorXd& x_state) {
-  MatrixXd h(1, 3);
+MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
+  MatrixXd h_x(3, 1);
   
   //recover state parameters
   float px = x_state(0);
@@ -81,11 +81,11 @@ MatrixXd Tools::CalculateCartesianToPolarMatrix(const VectorXd& x_state) {
   float sqrt_px_2_plus_py_2 = sqrt(pow(px,2) + pow(py,2));
 
   //compute the Jacobian matrix
-  h << sqrt_px_2_plus_py_2,
-       atan(py/px),
-       (px * vx + py * vy) / sqrt_px_2_plus_py_2;
+  h_x << sqrt_px_2_plus_py_2,
+         atan(py/px),
+         (px * vx + py * vy) / sqrt_px_2_plus_py_2;
   
-  return h;
+  return h_x;
 }
 
 void Tools::NormalizePhi(Eigen::VectorXd& y) {
