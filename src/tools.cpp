@@ -52,15 +52,20 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   float vy = x_state(3);
   
   float px_2_plus_py_2 = pow(px,2) + pow(py,2);
-  //check division by zero
-  px_2_plus_py_2 = px_2_plus_py_2 > 0 ? px_2_plus_py_2 : 0.0001;
-  
   float sqrt_px_2_plus_py_2 = sqrt(pow(px,2) + pow(py,2));
-
-  //compute the Jacobian matrix
-  Hj << px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2, 0, 0,
-        -py/px_2_plus_py_2, px/px_2_plus_py_2, 0, 0,
-        (py*(vx*py-vy*px))/sqrt(pow(px_2_plus_py_2, 3)), (px*(vx*py-vy*px))/pow(px_2_plus_py_2, 3/2), px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2;
+  //check division by zero
+  if (px_2_plus_py_2 > 0.0001)
+  {
+    //compute the Jacobian matrix
+    Hj << px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2, 0, 0,
+          -py/px_2_plus_py_2, px/px_2_plus_py_2, 0, 0,
+          (py*(vx*py-vy*px))/sqrt(pow(px_2_plus_py_2, 3)), (px*(vx*py-vy*px))/pow(px_2_plus_py_2, 3/2), px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2
+    ;
+  }
+  else
+  {
+    std::cout << "CalculateJacobian () - Error - Dividion by Zero" << std::endl;
+  }
   
   return Hj;
 }
@@ -75,15 +80,20 @@ MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
   float vy = x_state(3);
   
   float px_2_plus_py_2 = pow(px,2) + pow(py,2);
-  //check division by zero
-  px_2_plus_py_2 = px_2_plus_py_2 > 0 ? px_2_plus_py_2 : 0.0001;
-  
   float sqrt_px_2_plus_py_2 = sqrt(pow(px,2) + pow(py,2));
-
-  //compute the Jacobian matrix
-  h_x << sqrt_px_2_plus_py_2,
-         atan(py/px),
-         (px * vx + py * vy) / sqrt_px_2_plus_py_2;
+  
+  //check division by zero
+  if (px_2_plus_py_2 > 0.0001)
+  {
+    //compute the Jacobian matrix
+    h_x << sqrt_px_2_plus_py_2,
+           atan(py/px),
+           (px * vx + py * vy) / sqrt_px_2_plus_py_2;
+  }
+  else
+  {
+    std::cout << "CalculateCartesianToPolarMatrix () - Error - Dividion by Zero" << std::endl;
+  }
   
   return h_x;
 }
