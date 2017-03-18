@@ -43,8 +43,6 @@ void KalmanFilter::Update(const VectorXd &z) {
 void KalmanFilter::UpdateEKF(const VectorXd &z) {
   Tools tools;
   
-  MatrixXd Hj = tools.CalculateJacobian(x_);
-  
   MatrixXd h = tools.CalculateCartesianToPolarMatrix(x_);
   
   VectorXd z_pred = h * x_;
@@ -52,8 +50,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   
   tools.NormalizePhi(y);
   
-  MatrixXd Ht = Hj.transpose();
-  MatrixXd S = Hj * P_ * Ht + R_;
+  MatrixXd Ht = H_.transpose();
+  MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
   MatrixXd PHt = P_ * Ht;
   MatrixXd K = PHt * Si;
@@ -62,5 +60,5 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   x_ = x_ + (K * y);
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
-  P_ = (I - K * Hj) * P_;
+  P_ = (I - K * H_) * P_;
 }
