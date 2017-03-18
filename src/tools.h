@@ -29,6 +29,11 @@ public:
    * A helper method to calculate Cartesian to Polar conversion matrix.
    */
   Eigen::MatrixXd CalculateCartesianToPolarMatrix(const Eigen::VectorXd& x_state);
+  
+  /**
+   * A helper method to normalize ϕ.
+   */
+  void NormalizePhi(Eigen::VectorXd& y);
 
 };
 

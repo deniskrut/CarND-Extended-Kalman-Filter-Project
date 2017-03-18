@@ -49,6 +49,9 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   
   VectorXd z_pred = h * x_;
   VectorXd y = z - z_pred;
+  
+  tools.NormalizePhi(y);
+  
   MatrixXd Ht = Hj.transpose();
   MatrixXd S = Hj * P_ * Ht + R_;
   MatrixXd Si = S.inverse();

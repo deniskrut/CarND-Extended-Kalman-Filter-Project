@@ -42,35 +42,6 @@ VectorXd Tools::CalculateRMSE(const vector<VectorXd> &estimations,
   return rmse;
 }
 
-MatrixXd Tools::CalculateCartesianToPolarMatrix(const VectorXd& x_state) {
-  MatrixXd h(1, 3);
-  
-  //recover state parameters
-  float px = x_state(0);
-  float py = x_state(1);
-  float vx = x_state(2);
-  float vy = x_state(3);
-  
-  float px_2_plus_py_2 = pow(px,2) + pow(py,2);
-  float sqrt_px_2_plus_py_2 = sqrt(pow(px,2) + pow(py,2));
-  
-  //check division by zero
-  if (px_2_plus_py_2 > 0.0001)
-  {
-    //compute the Jacobian matrix
-    h << sqrt_px_2_plus_py_2,
-      atan(py/px),
-      (px * vx + py * vy) / sqrt_px_2_plus_py_2
-    ;
-  }
-  else
-  {
-    std::cout << "CalculateCartesianToPolarMatrix () - Error - Dividion by Zero" << std::endl;
-  }
-  
-  return h;
-}
-
 MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   MatrixXd Hj(3,4);
   
@@ -97,4 +68,42 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   }
   
   return Hj;
+}
+
+MatrixXd Tools::CalculateCartesianToPolarMatrix(const VectorXd& x_state) {
+  MatrixXd h(1, 3);
+  
+  //recover state parameters
+  float px = x_state(0);
+  float py = x_state(1);
+  float vx = x_state(2);
+  float vy = x_state(3);
+  
+  float px_2_plus_py_2 = pow(px,2) + pow(py,2);
+  float sqrt_px_2_plus_py_2 = sqrt(pow(px,2) + pow(py,2));
+  
+  //check division by zero
+  if (px_2_plus_py_2 > 0.0001)
+  {
+    //compute the Jacobian matrix
+    h << sqrt_px_2_plus_py_2,
+    atan(py/px),
+    (px * vx + py * vy) / sqrt_px_2_plus_py_2
+    ;
+  }
+  else
+  {
+    std::cout << "CalculateCartesianToPolarMatrix () - Error - Dividion by Zero" << std::endl;
+  }
+  
+  return h;
+}
+
+void Tools::NormalizePhi(Eigen::VectorXd& y) {
+  float phi = y(1);
+  
+  phi = phi - static_cast<int>(phi / (2 * M_PI));
+  phi = phi > M_PI ? phi - 2 * M_PI : phi;
+  
+  y(1) = phi;
 }
