@@ -30,12 +30,6 @@ FusionEKF::FusionEKF() {
   R_radar_ << 0.09, 0, 0,
               0, 0.0009, 0,
               0, 0, 0.09;
-
-  /**
-  TODO:
-    * Finish initializing the FusionEKF.
-    * Set the process and measurement noises
-  */
   
   //the initial transition matrix F_
   ekf_.F_ = MatrixXd(4, 4);
