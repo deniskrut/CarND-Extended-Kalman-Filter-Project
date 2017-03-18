@@ -78,10 +78,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       /**
       Convert radar from polar to cartesian coordinates and initialize state.
       */
-      float r = measurement_pack.raw_measurements_[0];
-      float phi = measurement_pack.raw_measurements_[1];
-      float x = r * cos(phi);
-      float y = r * sin(phi);
+      double r = measurement_pack.raw_measurements_[0];
+      double phi = measurement_pack.raw_measurements_[1];
+      double x = r * cos(phi);
+      double y = r * sin(phi);
       
       ekf_.x_ << x, y, 0, 0;
     }
@@ -103,20 +103,20 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    ****************************************************************************/
   
   //compute the time elapsed between the current and previous measurements
-  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
+  double dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
   previous_timestamp_ = measurement_pack.timestamp_;
   
   //update the state transition matrix F according to the new elapsed time
   ekf_.F_(0,2) = dt;
   ekf_.F_(1,3) = dt;
   
-  float dt_2 = dt * dt;
-  float dt_3 = dt_2 * dt;
-  float dt_4 = dt_3 * dt;
+  double dt_2 = dt * dt;
+  double dt_3 = dt_2 * dt;
+  double dt_4 = dt_3 * dt;
   
   //use noise_ax = 9 and noise_ay = 9 for your Q matrix
-  const float noise_ax = 9;
-  const float noise_ay = 9;
+  const double noise_ax = 9;
+  const double noise_ay = 9;
   
   //update the process noise covariance matrix
   ekf_.Q_ << dt_4 / 4 * noise_ax, 0, dt_3 / 2 * noise_ax, 0,
