@@ -51,12 +51,13 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
   double vx = x_state(2);
   double vy = x_state(3);
   
-  double px_2_plus_py_2 = fmax(pow(px,2) + pow(py,2), 0.0001);
+  double px_2_plus_py_2 = fmax(pow(px, 2) + pow(py, 2), 0.0000001);
   double sqrt_px_2_plus_py_2 = sqrt(px_2_plus_py_2);
+  double px_2_plus_py_2_3_2 = sqrt_px_2_plus_py_2 * px_2_plus_py_2;
 
   Hj << px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2, 0, 0,
-        -py/px_2_plus_py_2, px/px_2_plus_py_2, 0, 0,
-        (py*(vx*py-vy*px))/sqrt(pow(px_2_plus_py_2, 3)), (px*(vx*py-vy*px))/pow(px_2_plus_py_2, 3/2), px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2;
+        -py / px_2_plus_py_2, px / px_2_plus_py_2, 0, 0,
+        py * (vx * py - vy * px) / px_2_plus_py_2_3_2, px * (vy * px - vx * py) / px_2_plus_py_2_3_2, px / sqrt_px_2_plus_py_2, py / sqrt_px_2_plus_py_2;
   
   return Hj;
 }
@@ -70,7 +71,7 @@ MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
   double vx = x_state(2);
   double vy = x_state(3);
   
-  double px_2_plus_py_2 = fmax(pow(px,2) + pow(py,2), 0.0001);
+  double px_2_plus_py_2 = fmax(pow(px, 2) + pow(py, 2), 0.0000001);
   double sqrt_px_2_plus_py_2 = sqrt(px_2_plus_py_2);
   
   h_x << sqrt_px_2_plus_py_2,
@@ -83,7 +84,7 @@ MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
 void Tools::NormalizePhi(Eigen::VectorXd& y) {
   double phi = y(1);
   
-  phi = atan2(sin(phi),cos(phi));
+  phi = atan2(sin(phi), cos(phi));
   
   y(1) = phi;
 }
