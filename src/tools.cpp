@@ -87,7 +87,7 @@ MatrixXd Tools::ConvertCartesianToPolar(const VectorXd& x_state) {
   {
     //compute the Jacobian matrix
     h_x << sqrt_px_2_plus_py_2,
-           atan(py/px),
+           atan2(py, px),
            (px * vx + py * vy) / sqrt_px_2_plus_py_2;
   }
   else
