@@ -83,20 +83,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       float x = r * cos(phi);
       float y = r * sin(phi);
       
-      //ignore zero values to keep Jakobian not dividing by zero
-      if (x == 0 || y == 0)
-        return;
-      
       ekf_.x_ << x, y, 0, 0;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
       Initialize state.
       */
-      
-      //ignore zero values to keep Jakobian not dividing by zero
-      if (measurement_pack.raw_measurements_[0] == 0 || measurement_pack.raw_measurements_[1])
-        return;
       
       ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
